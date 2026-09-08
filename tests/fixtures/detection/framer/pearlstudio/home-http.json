@@ -1,0 +1,22 @@
+{
+  "status": 200,
+  "finalUrl": "https://pearlstudio.framer.website/",
+  "redirectChain": [],
+  "headers": {
+    "alt-svc": "h3=\":443\"; ma=2592000",
+    "cache-control": "public, max-age=0, must-revalidate",
+    "content-encoding": "br",
+    "content-length": "35284",
+    "content-type": "text/html",
+    "date": "Tue, 08 Sep 2026 23:32:09 GMT",
+    "etag": "\"49e771f6ca932b76a920f4bf5e524ef5\"",
+    "framer-site-id": "f3e2d8dcc6151e03944df79e2fda220d4284e6c8587d8d08e0ae4faebd3aa552",
+    "last-modified": "Sat, 13 Jun 2026 21:19:53 GMT",
+    "link": "<https://framerusercontent.com>; rel=\"preconnect\", <https://framerusercontent.com>; rel=\"preconnect\"; crossorigin=\"\"",
+    "server": "Framer/bea9510",
+    "server-timing": "region;desc=\"eu-central-1\", cache;desc=\"cached\", ssg-status;desc=\"optimized\", version;desc=\"bea9510\", instance;desc=\"5fd2aff\", route;dur=1;desc=\"id=augiA20Il&locale=default\", country;desc=\"DE\"",
+    "strict-transport-security": "max-age=31536000",
+    "vary": "Accept-Encoding, Accept",
+    "x-content-type-options": "nosniff"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "pages": [
+    {
+      "route": "/",
+      "kind": "static",
+      "localeId": "default",
+      "sources": [
+        "sitemap",
+        "crawl"
+      ]
+    },
+    {
+      "route": "/journal/stop-marketing-like-it-s-2010-design-driven-marketing-wins-now",
+      "kind": "item",
+      "collectionKey": "k5H8aKNmw",
+      "slug": "stop-marketing-like-it-s-2010-design-driven-marketing-wins-now",
+      "localeId": "default",
+      "sources": [
+        "sitemap"
+      ]
+    },
+    {
+      "route": "/works/rethinking-corelytics",
+      "kind": "item",
+      "collectionKey": "RrAibeyGz",
+      "slug": "rethinking-corelytics",
+      "localeId": "default",
+      "sources": [
+        "sitemap"
+      ]
+    }
+  ],
+  "collections": [
+    {
+      "key": "k5H8aKNmw",
+      "routePattern": "/journal/:slug",
+      "itemCount": 1
+    },
+    {
+      "key": "RrAibeyGz",
+      "routePattern": "/works/:slug",
+      "itemCount": 1
+    }
+  ]
+}
