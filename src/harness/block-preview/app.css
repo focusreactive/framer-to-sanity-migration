@@ -1,0 +1,9 @@
+@import "tailwindcss";
+@import "#site-theme";
+@import "#site-fonts";
+
+@source "__PROJECT_SYNTH__/**/*.tsx";
+
+body {
+  background-color: var(--color-surface, #fff);
+}
