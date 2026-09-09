@@ -126,7 +126,7 @@ describe("scaffoldStudio", () => {
       scripts: Record<string, string>;
       dependencies: Record<string, string>;
     };
-    expect(pkg.scripts["typecheck"]).toBe("tsc --noEmit");
+    expect(pkg.scripts["check-types"]).toBe("tsc --noEmit");
     expect(pkg.scripts["seed"]).toBe("tsx scripts/seed.ts");
     for (const dependency of ["@sanity/block-tools", "jsdom", "@portabletext/types"]) {
       expect(pkg.dependencies[dependency], `studio package.json is missing ${dependency}`).toBeTruthy();

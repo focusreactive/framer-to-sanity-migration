@@ -53,7 +53,9 @@ describe("scaffoldRoot", () => {
     const pkg = readJson<RootPackageJson>(emitted, "package.json");
     const turbo = readJson<TurboJson>(emitted, "turbo.json");
 
-    for (const task of ["typecheck", "build", "lint"]) {
+    expect(pkg.scripts["typecheck"]).toBe("turbo run check-types");
+    expect(Object.keys(turbo.tasks)).toContain("check-types");
+    for (const task of ["build", "lint"]) {
       expect(pkg.scripts[task]).toBe(`turbo run ${task}`);
       expect(Object.keys(turbo.tasks)).toContain(task);
     }

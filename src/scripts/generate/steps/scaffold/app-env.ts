@@ -24,6 +24,7 @@ export async function writeSanityEnv(opts: { projectPath: string; target: Sanity
     [
       `SANITY_STUDIO_PROJECT_ID=${target.projectId}`,
       `SANITY_STUDIO_DATASET=${target.dataset}`,
+      `SANITY_STUDIO_API_VERSION=${target.apiVersion}`,
       `SANITY_STUDIO_PREVIEW_ORIGIN=${DEV_PREVIEW_ORIGIN}`,
       "",
     ].join("\n"),

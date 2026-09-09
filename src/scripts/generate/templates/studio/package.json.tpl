@@ -9,7 +9,7 @@
     "deploy": "sanity deploy",
     "schema:extract": "sanity schema extract --workspace default",
     "typegen": "sanity schema extract --workspace default && sanity typegen generate",
-    "typecheck": "tsc --noEmit",
+    "check-types": "tsc --noEmit",
     "seed": "tsx scripts/seed.ts"
   },
   "dependencies": {

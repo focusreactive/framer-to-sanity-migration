@@ -16,22 +16,22 @@ async function project(scripts: Record<string, string>): Promise<string> {
 
 describe("executeGate against a real pnpm subprocess", () => {
   it("resolves with no note or findings when the gate's script exits zero", async () => {
-    const projectPath = await project({ build: 'node -e "process.exit(0)"' });
+    const projectPath = await project({ format: 'node -e "process.exit(0)"' });
 
-    const outcome = await executeGate({ projectPath, gate: "build" });
+    const outcome = await executeGate({ projectPath, gate: "format" });
 
     expect(outcome).toEqual({});
   }, 30_000);
 
   it("throws quoting the command and its output when a blocking gate's script exits nonzero", async () => {
-    const projectPath = await project({ build: 'node -e "console.log(\'boom\'); process.exit(1)"' });
+    const projectPath = await project({ format: 'node -e "console.log(\'boom\'); process.exit(1)"' });
 
-    await expect(executeGate({ projectPath, gate: "build" })).rejects.toThrow(/gate build.*exited 1/s);
-    await expect(executeGate({ projectPath, gate: "build" })).rejects.toThrow(/boom/);
+    await expect(executeGate({ projectPath, gate: "format" })).rejects.toThrow(/gate format.*exited 1/s);
+    await expect(executeGate({ projectPath, gate: "format" })).rejects.toThrow(/boom/);
   }, 30_000);
 
   it("records a non-blocking lint gate's failing output as findings instead of throwing", async () => {
-    const projectPath = await project({ lint: 'node -e "console.log(\'3 problems\'); process.exit(1)"' });
+    const projectPath = await project({ turbo: 'node -e "console.log(\'3 problems\'); process.exit(1)"' });
 
     const outcome = await executeGate({ projectPath, gate: "lint" });
 

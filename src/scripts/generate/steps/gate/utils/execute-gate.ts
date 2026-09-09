@@ -20,8 +20,22 @@ export function parseEnvFile(text: string): Record<string, string> {
 }
 
 export function gateCommands(gate: GateName): string[][] {
-  if (gate === "install") return [["install", "--ignore-workspace"]];
-  return [["run", gate]];
+  switch (gate) {
+    case "install":
+      return [["install"]];
+    case "types":
+      return [["--filter", "studio", "run", "typegen"]];
+    case "format":
+      return [["run", "format"]];
+    case "seed":
+      return [["--filter", "studio", "run", "seed"]];
+    case "typecheck":
+      return [["run", "turbo", "run", "check-types"]];
+    case "build":
+      return [["run", "turbo", "run", "build"]];
+    case "lint":
+      return [["run", "turbo", "run", "lint"]];
+  }
 }
 
 export interface ExecResult {

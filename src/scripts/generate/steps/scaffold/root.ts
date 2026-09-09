@@ -17,7 +17,7 @@ function rootPackageJson(projectName: string): string {
     scripts: {
       dev: "turbo run dev",
       build: "turbo run build",
-      typecheck: "turbo run typecheck",
+      typecheck: "turbo run check-types",
       lint: "turbo run lint",
       format: "prettier --write .",
       types: "pnpm --filter studio run typegen",
@@ -39,7 +39,7 @@ function turboJson(): string {
     $schema: "https://turbo.build/schema.json",
     tasks: {
       build: { dependsOn: ["^build"], outputs: [".next/**", "dist/**", "!.next/cache/**"] },
-      typecheck: { dependsOn: ["^typecheck"] },
+      "check-types": { dependsOn: ["^check-types"] },
       lint: {},
       dev: { cache: false, persistent: true },
     },

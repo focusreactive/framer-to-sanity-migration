@@ -2,20 +2,40 @@ import { GATE_NAMES } from "#generate/constants/ids.ts";
 import { gateCommands, timeoutFallbackFile } from "#generate/steps/gate/utils/execute-gate.ts";
 
 describe("gateCommands", () => {
-  it("runs every gate through pnpm, never through bun or turbo", () => {
+  it("runs every gate through pnpm, never through bun or npx", () => {
     for (const gate of GATE_NAMES) {
       for (const command of gateCommands(gate)) {
         expect(command[0]).not.toBe("bun");
-        expect(command).not.toContain("turbo");
+        expect(command[0]).not.toBe("npx");
+        expect(command[0]).not.toBe("pnpm");
       }
     }
   });
 
-  it("installs, then runs each remaining gate as its own pnpm script", () => {
-    expect(gateCommands("install")).toEqual([["install", "--ignore-workspace"]]);
-    expect(gateCommands("typecheck")).toEqual([["run", "typecheck"]]);
-    expect(gateCommands("build")).toEqual([["run", "build"]]);
-    expect(gateCommands("lint")).toEqual([["run", "lint"]]);
+  it("installs the whole workspace, never a single package", () => {
+    expect(gateCommands("install")).toEqual([["install"]]);
+    expect(gateCommands("install").flat()).not.toContain("--ignore-workspace");
+  });
+
+  it("generates types and seeds from the studio package, which owns sanity.config.ts", () => {
+    expect(gateCommands("types")).toEqual([["--filter", "studio", "run", "typegen"]]);
+    expect(gateCommands("seed")).toEqual([["--filter", "studio", "run", "seed"]]);
+  });
+
+  it("formats once at the workspace root", () => {
+    expect(gateCommands("format")).toEqual([["run", "format"]]);
+  });
+
+  it("fans typecheck, build and lint out to both workspaces through turbo", () => {
+    expect(gateCommands("typecheck")).toEqual([["run", "turbo", "run", "check-types"]]);
+    expect(gateCommands("build")).toEqual([["run", "turbo", "run", "build"]]);
+    expect(gateCommands("lint")).toEqual([["run", "turbo", "run", "lint"]]);
+  });
+
+  it("gives every gate at least one command", () => {
+    for (const gate of GATE_NAMES) {
+      expect(gateCommands(gate).length, `gate "${gate}" has no command`).toBeGreaterThan(0);
+    }
   });
 });
 
