@@ -13,6 +13,7 @@ import {
   timeoutFallbackFile,
   type ExecFn,
 } from "./utils/execute-gate.ts";
+import { assertBuildCanReadSeededContent } from "./utils/read-access-check.ts";
 
 export interface GateOutcome {
   note?: string;
@@ -26,6 +27,10 @@ export async function executeGate(args: { projectPath: string; gate: GateName; e
   const env = { ...process.env, ...fileEnv };
   let note: string | undefined;
   let findings: string | undefined;
+
+  if (args.gate === "build") {
+    await assertBuildCanReadSeededContent({ projectPath: args.projectPath });
+  }
 
   for (const command of gateCommands(args.gate)) {
     const result = await exec(command, {

@@ -4,7 +4,7 @@ import { join } from "node:path";
 
 import { writeFileAtomic } from "#lib/fs.ts";
 
-import { NEVER_REMOVED } from "../../constants/dirs.ts";
+import { NEVER_REMOVED, OWNED_BY_EARLIER_PHASE } from "../../constants/dirs.ts";
 import { DELIVERABLE_FILES_ARTIFACT_PATH } from "../../constants/paths.ts";
 
 import { assertNoRouteCollision } from "./utils/overlay.ts";
@@ -37,7 +37,7 @@ export function assertLayerSeams(opts: {
   emitted: ReadonlyMap<string, string | Buffer>;
   previouslyWritten: readonly string[];
 }): void {
-  const allowed = new Set<string>(opts.previouslyWritten);
+  const allowed = new Set<string>([...opts.previouslyWritten, ...OWNED_BY_EARLIER_PHASE]);
   const collisions = [...opts.emitted.keys()].filter(
     (relativePath) => existsSync(join(opts.projectPath, relativePath)) && !allowed.has(relativePath),
   );

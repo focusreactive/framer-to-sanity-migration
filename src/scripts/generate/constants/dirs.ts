@@ -8,3 +8,5 @@ export const DELIVERABLE_SRC_DIR = join(moduleDir, "deliverable");
 export const APP_DIRS = ["studio", "web"] as const;
 
 export const NEVER_REMOVED = ["studio/.env", "web/.env.local"] as const;
+
+export const OWNED_BY_EARLIER_PHASE = [".gitignore"] as const;

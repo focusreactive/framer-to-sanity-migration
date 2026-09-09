@@ -38,10 +38,14 @@ function turboJson(): string {
   const turbo = {
     $schema: "https://turbo.build/schema.json",
     tasks: {
-      build: { dependsOn: ["^build"], outputs: [".next/**", "dist/**", "!.next/cache/**"] },
+      build: {
+        dependsOn: ["^build"],
+        outputs: [".next/**", "dist/**", "!.next/cache/**"],
+        env: ["SANITY_API_READ_TOKEN"],
+      },
       "check-types": { dependsOn: ["^check-types"] },
       lint: {},
-      dev: { cache: false, persistent: true },
+      dev: { cache: false, persistent: true, env: ["SANITY_API_READ_TOKEN"] },
     },
   };
   return `${JSON.stringify(turbo, null, 2)}\n`;

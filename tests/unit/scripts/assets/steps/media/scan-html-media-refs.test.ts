@@ -59,6 +59,22 @@ describe("scanHtmlMediaRefs", () => {
     });
   });
 
+  it("extracts a video element's own src and every nested source's src", () => {
+    const html = `<video src="/bg.mp4"><source src="/bg.webm" type="video/webm"></video>`;
+    const refs = scanHtmlMediaRefs(html, BASE);
+
+    expect(refs).toContainEqual({
+      rawUrl: "https://site.example/bg.mp4",
+      source: "video-src",
+      hint: "video",
+    });
+    expect(refs).toContainEqual({
+      rawUrl: "https://site.example/bg.webm",
+      source: "video-src",
+      hint: "video",
+    });
+  });
+
   it("extracts inline background-image urls", () => {
     const html = `<div style="background-image:url('/bg.png')"></div>`;
     const refs = scanHtmlMediaRefs(html, BASE);

@@ -18,6 +18,7 @@ const MEDIA_ASSET_SOURCES = [
   "css-url",
   "lightbox-json",
   "video-urls",
+  "video-src",
   "poster-url",
   "og-image",
 ] as const;

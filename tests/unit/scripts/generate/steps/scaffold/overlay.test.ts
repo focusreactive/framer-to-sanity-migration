@@ -38,6 +38,14 @@ describe("assertLayerSeams", () => {
     ).not.toThrow();
   });
 
+  it("allows overwriting .gitignore even on a first scaffold, since init-project wrote it first", async () => {
+    const projectPath = await projectWith([".gitignore"]);
+    const { draft, templates, emitted } = createOverlayDraft();
+    draft.emit(".gitignore", "ours");
+
+    expect(() => assertLayerSeams({ projectPath, templates, emitted, previouslyWritten: [] })).not.toThrow();
+  });
+
   it("rejects an emitted route that claims a URL another route file already owns", async () => {
     const projectPath = await projectWith(["web/src/app/page.tsx"]);
     const { draft, templates, emitted } = createOverlayDraft();

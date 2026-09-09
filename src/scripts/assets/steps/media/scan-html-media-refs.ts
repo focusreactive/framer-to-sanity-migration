@@ -54,6 +54,14 @@ export function scanHtmlMediaRefs(html: string, baseUrl: string): ScannedMediaRe
     }
   });
 
+  $("video").each((_, el) => {
+    const video = $(el);
+    push(video.attr("src"), "video-src", "video");
+    video.find("source").each((_srcEl, srcEl) => {
+      push($(srcEl).attr("src"), "video-src", "video");
+    });
+  });
+
   $("[data-video-urls]").each((_, el) => {
     const csv = $(el).attr("data-video-urls");
     if (csv === undefined) return;

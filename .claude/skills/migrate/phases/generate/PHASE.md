@@ -42,13 +42,34 @@ closed step is free and tells you so.
 - A real Sanity project. `init-project` already collected its `--project-id`
   and `--dataset` (default `"production"`) into `run-config.json`'s `target` —
   this phase does not ask for them again, it just uses what is there.
-- `SANITY_API_WRITE_TOKEN` **must be set in the operator's own shell
-  environment** before running the `seed` gate (a project-scoped token with at
-  least Editor permission). It is never written into a generated file — not
-  `studio/.env`, not `web/.env.local`, not anywhere under `.migration/` — so a
-  run that reaches `seed` without it exporting fails immediately with a message
-  naming the variable. Say this to the user up front rather than letting them
-  discover it after `install`/`types`/`format` have already run.
+- Two separate Sanity tokens, neither ever written into a generated file — not
+  `studio/.env`, not `web/.env.local`, not anywhere under `.migration/`:
+  - `SANITY_API_WRITE_TOKEN` — used only by `studio/scripts/seed.ts`, so only
+    the shell running the `seed` gate needs it (Editor permission or higher).
+  - `SANITY_API_READ_TOKEN` — used only by the emitted `web` app's own client,
+    at both build time (`generateStaticParams`) and request time (Viewer
+    permission is enough). Nothing in `studio/` reads it.
+
+  **Before running `--preflight` or any gate, stop and ask the user for both**
+  — do not wait for `--preflight` or the `seed` gate to surface the missing
+  write token, and do not wait for the `build` gate's read-access check (below)
+  to surface the missing read token. Both gaps are silent and expensive to
+  discover late: a run that reaches `seed` without a write token fails only
+  after `install`/`types`/`format` already ran, and a dataset that is
+  reachable and writable can still be unreadable without (or even with) a
+  read token — that failure mode doesn't stop anything, it ships a deliverable
+  that builds clean and then 404s on every route once served. Explain the
+  split to the user exactly as above (which token, which shell, which
+  permission level) so they set the right one in the right place — a write
+  token exported for `seed` does not also cover reads, and vice versa.
+
+  A read token is not as sensitive as a write token — it grants no mutation
+  ability — so unlike the write token, the user may reasonably choose to save
+  themselves repeated exports by adding it directly to `web/.env.local`
+  themselves once scaffold has written that file. Scaffold only ever writes
+  `web/.env.local` once, if it is absent, so a hand-added line there survives
+  every later `--scaffold --force`. Offer this once, but do not do it for
+  them — it is their file to edit, not a generated one this tool owns.
 
 Before burning time on the earlier gates, run the read-only preflight:
 
@@ -65,6 +86,11 @@ token can read and write the target dataset — the same three things that would
 otherwise surface thirty minutes in, at the `seed` gate. A non-empty
 `problems` list means fix those first; it writes nothing, records no manifest
 step, and is safe to repeat.
+
+`--preflight` says nothing about `SANITY_API_READ_TOKEN` — there is no seeded
+content yet to check reads against this early, which is exactly why that
+conversation with the user has to happen up front instead (above), not by
+waiting on this command.
 
 ## Step 1 · scaffold (script, manifest step `generate:scaffold`)
 
@@ -236,6 +262,17 @@ pnpm tsx src/scripts/generate/index.ts --project <projectPath> --gate build [--f
 Runs `pnpm run turbo run build` (15 min timeout) — `sanity build` in `studio/`
 and `next build` in `web/`. Blocking. Same rule as `typecheck`: fix the
 emitter or the template, re-run scaffold, never patch the build output.
+
+Before invoking `turbo`, and only when `generate:seed` is already `done`, this
+gate checks the dataset the same way the emitted `web` app itself will:
+`SANITY_API_READ_TOKEN` if it is set, an anonymous request otherwise. If that
+access sees zero `page` documents despite seeding having succeeded, the gate
+fails immediately naming the problem — `next build`'s own exit code cannot
+catch this, since `generateStaticParams` returning an empty list is not an
+error, it is a deliverable that builds clean and then 404s on every route.
+Fix the same way `seed`'s connection-failure case is triaged: set
+`SANITY_API_READ_TOKEN` (Viewer permission is enough), or confirm the target
+dataset actually permits anonymous reads, then re-run `--gate build --force`.
 
 ### Step 8 · lint (manifest step `generate:lint`) — triage: not blocking; only eslint's exit code is read
 

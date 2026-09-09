@@ -10,7 +10,7 @@ interface RootPackageJson {
 }
 
 interface TurboJson {
-  tasks: Record<string, unknown>;
+  tasks: Record<string, { env?: string[] }>;
 }
 
 async function emitRoot(projectPath = "/tmp/pearlstudio-site"): Promise<Map<string, string | Buffer>> {
@@ -60,6 +60,14 @@ describe("scaffoldRoot", () => {
       expect(Object.keys(turbo.tasks)).toContain(task);
     }
     expect(Object.keys(turbo.tasks)).toContain("dev");
+  });
+
+  it("passes SANITY_API_READ_TOKEN through turbo's strict envMode to build and dev", async () => {
+    const emitted = await emitRoot();
+    const turbo = readJson<TurboJson>(emitted, "turbo.json");
+
+    expect(turbo.tasks["build"]?.env).toContain("SANITY_API_READ_TOKEN");
+    expect(turbo.tasks["dev"]?.env).toContain("SANITY_API_READ_TOKEN");
   });
 
   it("ignores the env files, the build output and the migration working dirs", async () => {
