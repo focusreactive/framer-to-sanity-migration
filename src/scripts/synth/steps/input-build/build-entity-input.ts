@@ -6,7 +6,7 @@ import { writeShardJson, type Vertical } from "#lib/synth-store/paths.ts";
 import { inputPath } from "../../constants/paths.ts";
 
 import { buildDocIndex, buildFieldsIndex, docResolver, fieldsForCollectionResolver } from "./utils/doc-input.ts";
-import { buildAssetMetaIndex, buildAssetSrcIndex, readAssetsData } from "./utils/media-input.ts";
+import { buildAssetMetaIndex, readAssetsData } from "./utils/media-input.ts";
 
 export interface BuildEntityInputOptions {
   fields: BlockField[];
@@ -28,14 +28,12 @@ export async function buildInputResolvers(
   fields: { type: BlockField["type"] }[],
 ): Promise<InputResolvers> {
   const assets = await readAssetsData(projectPath);
-  const srcIndex = buildAssetSrcIndex(projectPath, assets);
   const metaIndex = buildAssetMetaIndex(assets);
   const docIndex = await buildDocIndex(projectPath, fields);
   const fieldsIndex = await buildFieldsIndex(projectPath, fields);
   const resolveDoc = docResolver(docIndex);
 
   return {
-    assetSrc: (assetId) => srcIndex.get(assetId),
     assetMeta: (assetId) => metaIndex.get(assetId),
     resolveDoc,
     collectionListDocs: (collectionKey, ids) => ids.map((id) => resolveDoc(collectionKey, id)),

@@ -14,7 +14,6 @@ const record = (id: string): ContentRecord => ({ id, _provenance: "published" })
 
 function resolvers(overrides: Partial<InputResolvers> = {}): InputResolvers {
   return {
-    assetSrc: () => undefined,
     assetMeta: (assetId) => (assetId === "asset-1" || assetId === IMAGE_URL_ASSET_ID ? META : undefined),
     resolveDoc: (_collectionKey, id) => record(id),
     collectionListDocs: (_collectionKey, ids) => ids.map(record),

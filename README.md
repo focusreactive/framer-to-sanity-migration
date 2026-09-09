@@ -2,7 +2,7 @@
 
 Migrate a published Framer site into a Sanity project.
 
-> **This repository is the public slice of [FocusReactive's](https://focusreactive.com) internal migration tooling, and it is cut down in two ways.** It covers one path only — Framer → Sanity — and the pipeline behind that path is itself a simplified, but not hollowed out version of the internal one, though — it runs end-to-end on its own and hands you a working project.
+> **This repository is the public slice of [FocusReactive's](https://focusreactive.com) internal migration tooling, and it is cut down in two ways.** It covers one path only — Framer → Sanity — and the pipeline behind that path is itself a simplified but still complete version of the internal one: it runs end-to-end on its own and hands you a working project.
 
 ## What you get
 

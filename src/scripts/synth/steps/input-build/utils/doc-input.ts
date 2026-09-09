@@ -120,15 +120,3 @@ export function resolveDocValue(node: FieldType, value: unknown, resolveDoc: Res
       return value;
   }
 }
-
-export function resolveDocRecord(
-  fields: { name: string; type: FieldType }[],
-  record: Record<string, unknown>,
-  resolveDoc: ResolveDoc,
-): Record<string, unknown> {
-  const out: Record<string, unknown> = { ...record };
-  for (const field of fields) {
-    if (field.name in record) out[field.name] = resolveDocValue(field.type, record[field.name], resolveDoc);
-  }
-  return out;
-}

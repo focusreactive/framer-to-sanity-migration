@@ -22,7 +22,6 @@ export interface SurfaceShard {
 }
 
 export interface InputResolvers {
-  assetSrc: (assetId: string) => string | undefined;
   assetMeta: (assetId: string) => { sha: string; width?: number; height?: number; ext: string } | undefined;
   resolveDoc: (collectionKey: CollectionId, id: string) => ContentRecord;
   collectionListDocs: (collectionKey: CollectionId, ids: string[]) => ContentRecord[];

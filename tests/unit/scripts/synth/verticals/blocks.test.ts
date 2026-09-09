@@ -1,7 +1,13 @@
-import type { BlockField } from "#ir/blocks.ts";
+import { mkdir, readFile } from "node:fs/promises";
+import { join } from "node:path";
+
+import { type BlockField, blockTypeSchema } from "#ir/blocks.ts";
+import { synthEntryDir } from "#lib/synth-store/paths.ts";
 import { blockContentResponseSchema } from "#synth/schemas/content-response.ts";
 import { blockFieldsResponseSchema } from "#synth/schemas/fields-response.ts";
 import { blocksVertical } from "#synth/verticals/blocks.ts";
+
+import { synthProject } from "../fixtures/synth.ts";
 
 const fields: BlockField[] = [
   { name: "logo", type: { type: "image" }, required: true },
@@ -78,5 +84,25 @@ describe("blocksVertical.acceptFields", () => {
     );
     expect(outcome.ok).toBe(false);
     expect(outcome.ok === false && outcome.errors[0]).toMatchObject({ code: "DUPLICATE_FIELD", got: "logo" });
+  });
+});
+
+describe("blocksVertical.emitCodegen", () => {
+  it("parses the shard through blockTypeSchema and writes the props and schema files", async () => {
+    const projectPath = await synthProject("blocks-emit-codegen");
+    const dir = synthEntryDir(projectPath, "blocks", "hero");
+    await mkdir(dir, { recursive: true });
+
+    const shard = { name: "Hero", fields: [fields[0]], collectionKey: "posts" };
+    expect(() =>
+      blockTypeSchema.parse({ id: "hero", name: shard.name, fields: shard.fields, collectionKey: shard.collectionKey, content: {} }),
+    ).not.toThrow();
+
+    await blocksVertical.emitCodegen(projectPath, { key: "hero" }, shard);
+
+    const props = await readFile(join(dir, "props.ts"), "utf8");
+    const schema = await readFile(join(dir, "schema.ts"), "utf8");
+    expect(props).toContain("logo");
+    expect(schema).toContain("Hero");
   });
 });

@@ -14,7 +14,6 @@ const META = { sha: SHA, ext: "png" };
 
 function resolvers(overrides: Partial<InputResolvers> = {}): InputResolvers {
   return {
-    assetSrc: () => undefined,
     assetMeta: (assetId) => (assetId === "a1" ? META : undefined),
     resolveDoc: () => {
       throw new Error("resolveDoc is not stubbed in this test");
