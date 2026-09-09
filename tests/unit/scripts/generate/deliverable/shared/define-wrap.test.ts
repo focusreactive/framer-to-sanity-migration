@@ -1,5 +1,5 @@
-import { helpersImportLine, wrapTopLevelFields } from "#generate/steps/scaffold/define-wrap.ts";
-import { raw, renderSource } from "#generate/utils/source.ts";
+import { helpersImportLine, wrapTopLevelFields } from "#generate/deliverable/shared/define-wrap.ts";
+import { raw, renderSource } from "#generate/deliverable/shared/source.ts";
 
 describe("helpersImportLine", () => {
   it("imports nothing when no helpers are used", () => {
