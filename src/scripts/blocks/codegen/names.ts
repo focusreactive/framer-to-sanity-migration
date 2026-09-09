@@ -37,6 +37,7 @@ const camel = (value: string): string => {
   return pascalCased.charAt(0).toLowerCase() + pascalCased.slice(1);
 };
 
+export const pascalCase = pascal;
 export const schemaTypeName = camel;
 export const schemaFileName = (id: string): string => `${kebabCase(id)}.ts`;
 export const componentDirName = kebabCase;
