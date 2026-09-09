@@ -81,6 +81,13 @@ picks up at the first step that is not `done`.
 | [Freezing a published site so the migration is verifiable](guides/freeze-a-published-site-for-verifiable-migration.md) | How do you prove a rebuilt page matches the original, when screenshots cannot?                                      |
 | [Framer sections to Sanity blocks](guides/framer-sections-to-sanity-blocks.md)                                         | Framer has no block model — so where do the Sanity block schemas and the Portable Text come from?                   |
 
+## Demo
+
+|                    |                                                                                   |
+| ------------------ | --------------------------------------------------------------------------------- |
+| Reference (Framer) | [pearlstudio.framer.website](https://pearlstudio.framer.website/)                 |
+| Migrated (Sanity)  | [framer-to-sanity-migration-demo](https://framer-to-sanity-migration.vercel.app/) |
+
 ## 🚀 Need Help with Headless CMS Migration?
 
 This repository is maintained by [FocusReactive](https://focusreactive.com) — a specialized Next.js and Headless CMS migration agency.
