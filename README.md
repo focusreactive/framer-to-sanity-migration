@@ -1,4 +1,4 @@
-# framer-to-sanity-migration
+# Framer to Sanity Migration
 
 Migrate a published Framer site into a Sanity project.
 
@@ -102,7 +102,7 @@ The pipeline in this repository is one path out of that matrix, published in ful
 - **Speed:** We use our proprietary [CMS Kit](https://github.com/focusreactive/cms-kit) to speed up migrations by 40%.
 - **SEO & Performance:** Zero downtime migrations with 100/100 Lighthouse scores.
 
-👉 **[Get a Free Migration Consultation](https://focusreactive.com/services/headless-cms-expert-agency/)** or contact us at contact@focusreactive.com.
+👉 **[Get a Free Migration Consultation](https://focusreactive.com/services/headless-cms-expert-agency/#contacts)** or contact us at build@focusreactive.com.
 
 ## License
 
